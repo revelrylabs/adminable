@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if which asdf >/dev/null; then
+    echo "Running asdf install"
+    asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git
+    asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
+    asdf install
+else
+    echo "asdf not found. Please make sure it is installed by following directions below and try again"
+    echo "https://github.com/asdf-vm/asdf"
+    exit 1
+fi
+
+echo "Installing mix dependencies"
+mix local.hex --force
+mix local.rebar --force
+mix deps.get

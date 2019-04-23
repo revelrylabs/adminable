@@ -1,0 +1,13 @@
+#!/bin/bash
+
+sh ./bin/bootstrap
+
+if [ ! -f config/dev.secret.exs ]; then
+    echo "dev.secret.exs not found, creating"
+    echo "use Mix.Config" >> config/dev.secret.exs
+    echo "Make sure to add required secrets to this file"
+fi
+
+echo "===================================="
+echo "Setup complete."
+echo "===================================="

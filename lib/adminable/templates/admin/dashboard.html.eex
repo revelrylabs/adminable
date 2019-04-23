@@ -1,0 +1,28 @@
+<%= row do %>
+  <%= col do %>
+    <h1>Admin Dashboard</h1>
+  <% end %>
+<% end %>
+
+<%= row do %>
+  <%= col do %>
+    <div class="rev-TableContainer">
+    <table class="rev-Table">
+      <thead class="rev-Table-head">
+        <tr class="rev-Table-row">
+          <th class="rev-Table-header">Schema</th>
+        </tr>
+      </thead>
+      <tbody class="rev-Table-body">
+        <%= for schema <- @schemas do %>
+          <tr class="rev-Table-row">
+            <td class="rev-Table-Data">
+              <a href="<%= Adminable.Router.Helpers.admin_path(@conn, :index, schema) %>"><%= schema %></a>
+            </td>
+          <tr>
+        <% end %>
+      </tbody>
+    </table>
+    </div>
+  <% end %>
+<% end %>
