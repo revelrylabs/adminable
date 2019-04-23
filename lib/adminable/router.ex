@@ -1,15 +1,5 @@
 defmodule Adminable.Router do
-  @moduledoc """
-  Router for admin routes. Add this to your phoenix router
-
-  ```elixir
-  scope "/admin" do
-    pipe_through [:browser, :my, :other, :pipelines]
-
-    forward("/", Adminable.Router)
-  end
-  ```
-  """
+  @moduledoc false
 
   use Phoenix.Router
 

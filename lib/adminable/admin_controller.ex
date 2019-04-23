@@ -5,41 +5,32 @@ defmodule Adminable.AdminController do
   import Plug.Conn
   alias Adminable.Router.Helpers, as: Routes
 
-  defp schemas do
-    Application.get_env(:adminable, :schemas, %{})
-  end
-
-  defp repo do
-    Application.fetch_env!(:adminable, :repo)
-  end
-
-  defp layout do
-    Application.get_env(:adminable, :layout, {Adminable.LayoutView, "app.html"})
-  end
-
   def dashboard(conn, _params) do
-    schemas = Map.keys(schemas())
+    schemas = Map.keys(conn.assigns.schemas)
 
     opts = [
       schemas: schemas
     ]
 
     conn
-    |> put_layout(layout())
+    |> put_layout(conn.assigns.layout)
     |> render("dashboard.html", opts)
   end
 
   def index(conn, %{"schema" => schema} = params) do
-    schema_module = schemas()[schema]
+    schema_module = conn.assigns.schemas[schema]
 
-    page = repo().paginate(schema_module, params)
+    paginate_config = [
+      page_size: 20,
+      page_number: Map.get(params, "page", 1),
+      module: conn.assigns.repo
+    ]
 
-    schemas = repo().all(schema_module)
+    page = Scrivener.paginate(schema_module, paginate_config)
 
     opts = [
       schema_module: schema_module,
       schema: schema,
-      schemas: schemas,
       schemas: page.entries,
       page_number: page.page_number,
       page_size: page.page_size,
@@ -48,12 +39,12 @@ defmodule Adminable.AdminController do
     ]
 
     conn
-    |> put_layout(layout())
+    |> put_layout(conn.assigns.layout)
     |> render("index.html", opts)
   end
 
   def new(conn, %{"schema" => schema}) do
-    schema_module = schemas()[schema]
+    schema_module = conn.assigns.schemas[schema]
 
     model = struct(schema_module)
 
@@ -64,18 +55,18 @@ defmodule Adminable.AdminController do
     ]
 
     conn
-    |> put_layout(layout())
+    |> put_layout(conn.assigns.layout)
     |> render("new.html", opts)
   end
 
   def create(conn, %{"schema" => schema, "data" => data}) do
-    schema_module = schemas()[schema]
+    schema_module = conn.assigns.schemas[schema]
 
     new_schema = struct(schema_module)
 
     changeset = Adminable.create_changeset(new_schema, data)
 
-    case repo().insert(changeset) do
+    case conn.assigns.repo.insert(changeset) do
       {:ok, _created} ->
         conn
         |> put_flash(:info, "#{String.capitalize(schema)} created!")
@@ -91,18 +82,18 @@ defmodule Adminable.AdminController do
         conn
         |> put_flash(:error, "#{String.capitalize(schema)} failed to create!")
         |> put_status(:unprocessable_entity)
-        |> put_layout(layout())
+        |> put_layout(conn.assigns.layout)
         |> render("new.html", opts)
     end
   end
 
   def edit(conn, %{"schema" => schema, "pk" => pk}) do
-    schema_module = schemas()[schema]
+    schema_module = conn.assigns.schemas[schema]
 
     model =
       schema_module.__schema__(:associations)
-      |> Enum.reduce(repo().get(schema_module, pk), fn a, m ->
-        repo().preload(m, a)
+      |> Enum.reduce(conn.assigns.repo.get(schema_module, pk), fn a, m ->
+        conn.assigns.repo.preload(m, a)
       end)
 
     opts = [
@@ -113,18 +104,18 @@ defmodule Adminable.AdminController do
     ]
 
     conn
-    |> put_layout(layout())
+    |> put_layout(conn.assigns.layout)
     |> render("edit.html", opts)
   end
 
   def update(conn, %{"schema" => schema, "pk" => pk, "data" => data}) do
-    schema_module = schemas()[schema]
+    schema_module = conn.assigns.schemas[schema]
 
-    item = repo().get!(schema_module, pk)
+    item = conn.assigns.repo.get!(schema_module, pk)
 
     changeset = Adminable.edit_changeset(item, data)
 
-    case repo().update(changeset) do
+    case conn.assigns.repo.update(changeset) do
       {:ok, _updated_model} ->
         conn
         |> put_flash(:info, "#{String.capitalize(schema)} ID #{pk} updated!")
@@ -141,7 +132,7 @@ defmodule Adminable.AdminController do
         conn
         |> put_flash(:error, "#{String.capitalize(schema)} ID #{pk} failed to update!")
         |> put_status(:unprocessable_entity)
-        |> put_layout(layout())
+        |> put_layout(conn.assigns.layout)
         |> render("edit.html", opts)
     end
   end
