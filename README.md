@@ -28,7 +28,7 @@ be found at [https://hexdocs.pm/adminable](https://hexdocs.pm/adminable).
 
 - Implement `Adminable` protocol for selected schemas you want to see in admin dashboard
 
-```
+```elixir
 defimpl Adminable, for: MyApp.User do
   def source(_schema) do
     MyApp.User.__schema__(:source)
