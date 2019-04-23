@@ -23,3 +23,22 @@ end
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/adminable](https://hexdocs.pm/adminable).
+
+## Configuration
+
+```elixir
+config :adminable,
+  repo: MyApp.Repo,
+  schemas: %{"users" => MyApp.User},
+  layout: {MyAppWeb.LayoutView, "app.html"}
+```
+
+## Setup
+
+```elixir
+  scope "/admin" do
+    pipe_through [:browser, :my, :other, :pipelines]
+
+    forward("/", Adminable.Router)
+  end
+```
