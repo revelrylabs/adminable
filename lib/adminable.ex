@@ -36,8 +36,6 @@ defprotocol Adminable do
 
   - Forward to `Adminable.Router`
 
-  ## Setup
-
   ```elixir
   scope "/admin" do
     pipe_through [:browser, :my, :other, :pipelines]
@@ -49,7 +47,6 @@ defprotocol Adminable do
     ])
   end
   ```
-
   """
   @fallback_to_any true
 

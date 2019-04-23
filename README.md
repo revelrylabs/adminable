@@ -56,23 +56,16 @@ defimpl Adminable, for: MyApp.User do
 end
 ```
 
-- Add configuration, including a map of schemas to their sources (tables)
-
-```elixir
-config :adminable,
-  repo: MyApp.Repo,
-  schemas: %{"users" => MyApp.User},
-  layout: {MyAppWeb.LayoutView, "app.html"}
-```
-
 - Forward to `Adminable.Router`
 
-## Setup
-
 ```elixir
-  scope "/admin" do
-    pipe_through [:browser, :my, :other, :pipelines]
+scope "/admin" do
+  pipe_through [:browser, :my, :other, :pipelines]
 
-    forward("/", Adminable.Router)
-  end
+  forward("/", Adminable.Plug, [
+    repo: MyApp.Repo,
+    schemas: %{"users" => MyApp.User},
+    layout: {MyAppWeb.LayoutView, "app.html"}
+  ])
+end
 ```
