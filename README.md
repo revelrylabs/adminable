@@ -26,12 +26,46 @@ be found at [https://hexdocs.pm/adminable](https://hexdocs.pm/adminable).
 
 ## Configuration
 
+- Implement `Adminable` protocol for selected schemas you want to see in admin dashboard
+
+```
+defimpl Adminable, for: MyApp.User do
+  def source(_schema) do
+    MyApp.User.__schema__(:source)
+  end
+
+  def readable_fields(_schema) do
+    MyApp.User.__schema__(:fields)
+  end
+
+  def editable_fields(_schema) do
+    MyApp.User.__schema__(:fields) -- MyApp.User.__schema__(:primary_key)
+  end
+
+  def index_fields(_schema) do
+    MyApp.User.__schema__(:fields)
+  end
+
+  def create_changeset(s, data) do
+    MyApp.User.changeset(s, data)
+  end
+
+  def edit_changeset(s, data) do
+    MyApp.User.edit_changeset(s, data)
+  end
+end
+```
+
+- Add configuration, including a map of schemas to their sources (tables)
+
 ```elixir
 config :adminable,
   repo: MyApp.Repo,
   schemas: %{"users" => MyApp.User},
   layout: {MyAppWeb.LayoutView, "app.html"}
 ```
+
+- Forward to `Adminable.Router`
 
 ## Setup
 
