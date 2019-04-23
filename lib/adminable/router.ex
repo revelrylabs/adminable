@@ -4,9 +4,9 @@ defmodule Adminable.Router do
   scope "/", Adminable do
     get("/", AdminController, :dashboard)
     get("/:schema/", AdminController, :index)
-    get("/new/:schema", AdminController, :new)
-    post("/new/:schema", AdminController, :create)
-    get("/edit/:schema/:pk", AdminController, :edit)
-    put("/update/:schema/:pk", AdminController, :update)
+    get("/:schema/new/", AdminController, :new)
+    post("/:schema/new/", AdminController, :create)
+    get("/:schema/edit/:pk", AdminController, :edit)
+    put("/:schema/edit/:pk", AdminController, :update)
   end
 end

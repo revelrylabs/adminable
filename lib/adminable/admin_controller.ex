@@ -56,7 +56,7 @@ defmodule Adminable.AdminController do
     model = struct(schema_module)
 
     opts = [
-      changeset: Ecto.Changeset.change(model, %{}),
+      changeset: Adminable.create_changeset(model, %{}),
       schema_module: schema_module,
       schema: schema
     ]
@@ -71,7 +71,7 @@ defmodule Adminable.AdminController do
 
     new_schema = struct(schema_module)
 
-    changeset = Ecto.Changeset.cast(new_schema, data, Adminable.editable_fields(new_schema))
+    changeset = Adminable.create_changeset(new_schema, data)
 
     case repo().insert(changeset) do
       {:ok, _created} ->
@@ -87,7 +87,7 @@ defmodule Adminable.AdminController do
         ]
 
         conn
-        |> put_flash(:failed, "#{String.capitalize(schema)} failed to create!")
+        |> put_flash(:error, "#{String.capitalize(schema)} failed to create!")
         |> put_status(:unprocessable_entity)
         |> put_layout(layout())
         |> render("new.html", opts)
@@ -104,7 +104,7 @@ defmodule Adminable.AdminController do
       end)
 
     opts = [
-      changeset: Ecto.Changeset.change(model, %{}),
+      changeset: Adminable.edit_changeset(model, %{}),
       schema_module: schema_module,
       schema: schema,
       pk: pk
@@ -120,7 +120,7 @@ defmodule Adminable.AdminController do
 
     item = repo().get!(schema_module, pk)
 
-    changeset = Ecto.Changeset.cast(item, data, Adminable.editable_fields(item))
+    changeset = Adminable.edit_changeset(item, data)
 
     case repo().update(changeset) do
       {:ok, _updated_model} ->
@@ -137,7 +137,7 @@ defmodule Adminable.AdminController do
         ]
 
         conn
-        |> put_flash(:failed, "#{String.capitalize(schema)} ID #{pk} failed to update!")
+        |> put_flash(:error, "#{String.capitalize(schema)} ID #{pk} failed to update!")
         |> put_status(:unprocessable_entity)
         |> put_layout(layout())
         |> render("edit.html", opts)
