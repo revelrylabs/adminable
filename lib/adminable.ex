@@ -20,10 +20,6 @@ defprotocol Adminable do
       MyApp.User.__schema__(:fields) -- MyApp.User.__schema__(:primary_key)
     end
 
-    def index_fields(_schema) do
-      MyApp.User.__schema__(:fields)
-    end
-
     def create_changeset(s, data) do
       MyApp.User.changeset(s, data)
     end
