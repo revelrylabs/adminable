@@ -59,8 +59,8 @@ scope "/admin" do
   pipe_through [:browser, :my, :other, :pipelines]
 
   forward("/", Adminable.Plug, [
+    otp_app: :my_app,
     repo: MyApp.Repo,
-    schemas: %{"users" => MyApp.User},
     layout: {MyAppWeb.LayoutView, "app.html"}
   ])
 end
