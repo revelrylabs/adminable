@@ -1,4 +1,6 @@
 defmodule Adminable.AdminController do
+  @moduledoc false
+
   use Phoenix.Controller, namespace: Adminable
   import Plug.Conn
   alias Adminable.Router.Helpers, as: Routes
