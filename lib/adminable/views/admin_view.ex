@@ -104,7 +104,7 @@ defmodule Adminable.AdminView do
         <% end %>
         """
 
-      type ->
+      _type ->
         ~E"""
         <%= col do %>
           <%= text_input_stack(
