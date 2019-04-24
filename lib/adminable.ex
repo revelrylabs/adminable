@@ -8,16 +8,8 @@ defprotocol Adminable do
 
   ```elixir
   defimpl Adminable, for: MyApp.User do
-    def source(_schema) do
-      MyApp.User.__schema__(:source)
-    end
-
-    def readable_fields(_schema) do
+    def fields(schema) do
       MyApp.User.__schema__(:fields)
-    end
-
-    def editable_fields(_schema) do
-      MyApp.User.__schema__(:fields) -- MyApp.User.__schema__(:primary_key)
     end
 
     def create_changeset(s, data) do
@@ -47,22 +39,11 @@ defprotocol Adminable do
   @fallback_to_any true
 
   @doc """
-  The source of the schema. Usually the table's name
+  A list of fields for to show and edit in Adminable. The primary key will be excluded from
+  create and edit forms
   """
-  @spec source(any()) :: binary()
-  def source(schema)
-
-  @doc """
-  A list of visible fields on the schema's index page
-  """
-  @spec readable_fields(any()) :: [atom()]
-  def readable_fields(schema)
-
-  @doc """
-  A list of editable fields on the schema's new and edit pages
-  """
-  @spec editable_fields(any()) :: [atom()]
-  def editable_fields(schema)
+  @spec fields(any()) :: [atom()]
+  def fields(schema)
 
   @doc """
   Returns a changeset used for creating new schemas
@@ -78,23 +59,15 @@ defprotocol Adminable do
 end
 
 defimpl Adminable, for: Any do
-  def source(schema) do
-    schema.__struct__.__schema__(:source)
-  end
-
-  def readable_fields(schema) do
+  def fields(schema) do
     schema.__struct__.__schema__(:fields)
   end
 
-  def editable_fields(schema) do
-    schema.__struct__.__schema__(:fields) -- schema.__struct__.__schema__(:primary_key)
-  end
-
   def create_changeset(schema, data) do
-    Ecto.Changeset.cast(schema, data, editable_fields(schema))
+    Ecto.Changeset.cast(schema, data, fields(schema))
   end
 
   def edit_changeset(schema, data) do
-    Ecto.Changeset.cast(schema, data, editable_fields(schema))
+    Ecto.Changeset.cast(schema, data, fields(schema))
   end
 end

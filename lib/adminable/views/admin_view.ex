@@ -13,6 +13,16 @@ defmodule Adminable.AdminView do
 
   @page_links_to_show 2
 
+  def index_fields(schema_module) do
+    Adminable.fields(struct(schema_module))
+  end
+
+  def form_fields(changeset) do
+    schema = changeset.data
+
+    Adminable.fields(schema) -- schema.__struct__.__schema__(:primary_key)
+  end
+
   def make_next_page_link(conn, current_page, url) do
     make_page_link(conn, current_page + 1, url)
   end
@@ -82,7 +92,7 @@ defmodule Adminable.AdminView do
         <% end %>
         """
 
-      :integer ->
+      number when number in [:integer, :float] ->
         ~E"""
         <%= col do %>
           <%= number_input_stack(
@@ -94,7 +104,7 @@ defmodule Adminable.AdminView do
         <% end %>
         """
 
-      _ ->
+      type ->
         ~E"""
         <%= col do %>
           <%= text_input_stack(

@@ -7,7 +7,7 @@
     <% end %>
     <%= form_for @changeset, Routes.admin_path(@conn, :update, @schema, @pk), [as: :data], fn f -> %>
       <%= row do %>
-        <%= for field <- Adminable.editable_fields(@changeset.data) do %>
+        <%= for field <- form_fields(@changeset) do %>
           <%= field(f, @schema_module, field) %>
         <% end %>
       <% end %>

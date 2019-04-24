@@ -1,11 +1,8 @@
 # Adminable
 
-MAKE IT LIKE ADMINIUM
+Create admin interfaces through defining the `Adminable` protocol and using [reflection](https://hexdocs.pm/ecto/Ecto.Schema.html#module-reflection)
 
-Based on blog post [here](https://lytedev.io/blog/ecto-reflection-for-simple-admin-crud-forms/) and
-[Django ModelAdmin object](https://docs.djangoproject.com/en/2.2/ref/contrib/admin/#modeladmin-objects)
-
-Allows creating admin interfaces through defining the `Adminable` protocol and using [reflection](https://hexdocs.pm/ecto/Ecto.Schema.html#module-reflection)
+Based on blog post [here](https://lytedev.io/blog/ecto-reflection-for-simple-admin-crud-forms/)
 
 ## Installation
 
@@ -30,16 +27,8 @@ be found at [https://hexdocs.pm/adminable](https://hexdocs.pm/adminable).
 
 ```elixir
 defimpl Adminable, for: MyApp.User do
-  def source(_schema) do
-    MyApp.User.__schema__(:source)
-  end
-
-  def readable_fields(_schema) do
+  def fields(schema) do
     MyApp.User.__schema__(:fields)
-  end
-
-  def editable_fields(_schema) do
-    MyApp.User.__schema__(:fields) -- MyApp.User.__schema__(:primary_key)
   end
 
   def create_changeset(s, data) do
