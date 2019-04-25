@@ -49,7 +49,7 @@ defmodule Adminable.AdminController do
     model = struct(schema_module)
 
     opts = [
-      changeset: Adminable.create_changeset(model, %{}),
+      changeset: schema_module.create_changeset(model, %{}),
       schema_module: schema_module,
       schema: schema
     ]
@@ -64,7 +64,7 @@ defmodule Adminable.AdminController do
 
     new_schema = struct(schema_module)
 
-    changeset = Adminable.create_changeset(new_schema, data)
+    changeset = schema_module.create_changeset(new_schema, data)
 
     case conn.assigns.repo.insert(changeset) do
       {:ok, _created} ->
@@ -97,7 +97,7 @@ defmodule Adminable.AdminController do
       end)
 
     opts = [
-      changeset: Adminable.edit_changeset(model, %{}),
+      changeset: schema_module.edit_changeset(model, %{}),
       schema_module: schema_module,
       schema: schema,
       pk: pk
@@ -113,7 +113,7 @@ defmodule Adminable.AdminController do
 
     item = conn.assigns.repo.get!(schema_module, pk)
 
-    changeset = Adminable.edit_changeset(item, data)
+    changeset = schema_module.edit_changeset(item, data)
 
     case conn.assigns.repo.update(changeset) do
       {:ok, _updated_model} ->

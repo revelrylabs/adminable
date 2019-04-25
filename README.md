@@ -1,6 +1,6 @@
 # Adminable
 
-Create admin interfaces through defining the `Adminable` protocol and using [reflection](https://hexdocs.pm/ecto/Ecto.Schema.html#module-reflection)
+Create admin interfaces for Ecto Schemas in Phoenix apps
 
 Based on blog post [here](https://lytedev.io/blog/ecto-reflection-for-simple-admin-crud-forms/)
 
@@ -23,23 +23,19 @@ be found at [https://hexdocs.pm/adminable](https://hexdocs.pm/adminable).
 
 ## Configuration
 
-- Implement `Adminable` protocol for selected schemas you want to see in admin dashboard
+- Add `use Adminable` to your Ecto Schema
 
-```elixir
-defimpl Adminable, for: MyApp.User do
-  def fields(schema) do
-    MyApp.User.__schema__(:fields)
-  end
+  ```elixir
+  defmodule MyApp.User do
+    use Ecto.Schema
+    import Ecto.{Query, Changeset}, warn: false
+    use Adminable
 
-  def create_changeset(s, data) do
-    MyApp.User.changeset(s, data)
+    ...
   end
+  ```
 
-  def edit_changeset(s, data) do
-    MyApp.User.edit_changeset(s, data)
-  end
-end
-```
+- optionally implement fields/0, create_changeset/2 and edit_changeset/2
 
 - Forward to `Adminable.Router`
 
@@ -50,6 +46,7 @@ scope "/admin" do
   forward("/", Adminable.Plug, [
     otp_app: :my_app,
     repo: MyApp.Repo,
+    schemas: [MyApp.User]
     layout: {MyAppWeb.LayoutView, "app.html"}
   ])
 end

@@ -14,13 +14,14 @@ defmodule Adminable.AdminView do
   @page_links_to_show 2
 
   def index_fields(schema_module) do
-    Adminable.fields(struct(schema_module))
+    schema_module.fields()
   end
 
   def form_fields(changeset) do
     schema = changeset.data
 
-    Adminable.fields(schema) -- schema.__struct__.__schema__(:primary_key)
+    fields = schema.__struct__.fields() -- [:inserted_at, :updated_at]
+    fields -- schema.__struct__.__schema__(:primary_key)
   end
 
   def make_next_page_link(conn, current_page, url) do
@@ -118,18 +119,14 @@ defmodule Adminable.AdminView do
     end
   end
 
-  defp repo do
-    Application.fetch_env!(:adminable, :repo)
-  end
-
-  def association(form, schema_module, association, opts \\ []) do
+  def association(conn, form, schema_module, association, opts \\ []) do
     association = schema_module.__schema__(:association, association)
 
     # make sure your schemas implement the `String.Chars` protocol so they can
     # look nice in a select!
     # obviously, if you have massive tables, `Repo.all/1` is a bad idea!
     options =
-      repo().all(association.queryable)
+      conn.assigns.repo.all(association.queryable)
       |> Enum.map(&{&1.id, to_string(&1)})
 
     case association.cardinality do

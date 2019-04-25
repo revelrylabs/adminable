@@ -1,26 +1,22 @@
-defprotocol Adminable do
+defmodule Adminable do
   @moduledoc """
-  Protocol for to capture how to build admin interfaces and which fields to allow to edit
+  Behaviour to capture how to build admin interfaces and which fields to allow to edit
 
   ## Configuration
 
-  - Implement `Adminable` protocol for selected schemas you want to see in admin dashboard
+  - Add `use Adminable` to your Ecto Schema. Optionally
 
   ```elixir
-  defimpl Adminable, for: MyApp.User do
-    def fields(schema) do
-      MyApp.User.__schema__(:fields)
-    end
+  defmodule MyApp.User do
+    use Ecto.Schema
+    import Ecto.{Query, Changeset}, warn: false
+    use Adminable
 
-    def create_changeset(s, data) do
-      MyApp.User.changeset(s, data)
-    end
-
-    def edit_changeset(s, data) do
-      MyApp.User.edit_changeset(s, data)
-    end
+    ...
   end
   ```
+
+  - optionally implement `fields/0`, `create_changeset/2` and `edit_changeset/2`
 
   - Forward to `Adminable.Router`
 
@@ -31,43 +27,46 @@ defprotocol Adminable do
     forward("/", Adminable.Plug, [
       otp_app: :my_app,
       repo: MyApp.Repo,
+      schemas: [MyApp.User]
       layout: {MyAppWeb.LayoutView, "app.html"}
     ])
   end
   ```
   """
-  @fallback_to_any true
 
   @doc """
   A list of fields for to show and edit in Adminable. The primary key will be excluded from
   create and edit forms
   """
-  @spec fields(any()) :: [atom()]
-  def fields(schema)
+  @callback fields() :: [atom()]
 
   @doc """
   Returns a changeset used for creating new schemas
   """
-  @spec create_changeset(any(), any()) :: Ecto.Changeset.t()
-  def create_changeset(schema, data)
+  @callback create_changeset(any(), any()) :: Ecto.Changeset.t()
 
   @doc """
   Returns a changeset used for editing existing schemas
   """
-  @spec edit_changeset(any(), any()) :: Ecto.Changeset.t()
-  def edit_changeset(schema, data)
-end
+  @callback edit_changeset(any(), any()) :: Ecto.Changeset.t()
 
-defimpl Adminable, for: Any do
-  def fields(schema) do
-    schema.__struct__.__schema__(:fields)
-  end
+  defmacro __using__(_) do
+    quote do
+      @behaviour Adminable
 
-  def create_changeset(schema, data) do
-    Ecto.Changeset.cast(schema, data, fields(schema))
-  end
+      def fields() do
+        __MODULE__.__schema__(:fields)
+      end
 
-  def edit_changeset(schema, data) do
-    Ecto.Changeset.cast(schema, data, fields(schema))
+      def create_changeset(schema, data) do
+        __MODULE__.changeset(schema, data)
+      end
+
+      def edit_changeset(schema, data) do
+        __MODULE__.changeset(schema, data)
+      end
+
+      defoverridable fields: 0, create_changeset: 2, edit_changeset: 2
+    end
   end
 end

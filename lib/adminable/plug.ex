@@ -7,8 +7,9 @@ defmodule Adminable.Plug do
     pipe_through [:browser, :my, :other, :pipelines]
 
     forward("/", Adminable.Plug, [
+      otp_app: :my_app,
       repo: MyApp.Repo,
-      schemas: %{"users" => MyApp.User},
+      schemas: [MyApp.User],
       layout: {MyAppWeb.LayoutView, "app.html"}
     ])
   end
@@ -22,10 +23,8 @@ defmodule Adminable.Plug do
   def call(conn, opts) do
     repo = Keyword.fetch!(opts, :repo)
     otp_app = Keyword.fetch!(opts, :otp_app)
+    schemas = Keyword.get(opts, :schemas, [])
     layout = Keyword.get(opts, :layout, {Adminable.LayoutView, "app.html"})
-
-    path = :code.lib_dir(:app_template, :ebin)
-    schemas = Protocol.extract_impls(Adminable, [path])
 
     schemas =
       Enum.map(schemas, fn schema ->
