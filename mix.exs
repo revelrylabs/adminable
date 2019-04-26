@@ -42,10 +42,10 @@ defmodule Adminable.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:phoenix, "~> 1.4.0-rc"},
+      {:phoenix, "~> 1.4.0"},
       {:phoenix_html, "~> 2.10"},
       {:gettext, "~> 0.11"},
-      {:ecto, "~> 3.0-rc"},
+      {:ecto, "~> 3.0"},
       {:scrivener_ecto, "~> 2.0"},
       {:harmonium, "~> 2.0.0"},
       {:jason, "~> 1.0"},
