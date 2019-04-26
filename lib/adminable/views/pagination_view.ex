@@ -1,4 +1,6 @@
 defmodule Adminable.PaginationView do
+  @moduledoc false
+
   @page_links_to_show 2
 
   def make_next_page_link(conn, current_page, url) do

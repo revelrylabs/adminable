@@ -1,4 +1,6 @@
 defmodule Adminable.Field do
+  @moduledoc false
+
   import Harmonium
   use Phoenix.HTML
 
