@@ -22,7 +22,7 @@ defmodule Adminable.AdminController do
 
     paginate_config = [
       page_size: 20,
-      page_number: Map.get(params, "page", 1),
+      page: Map.get(params, "page", 1),
       module: conn.assigns.repo
     ]
 
