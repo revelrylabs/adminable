@@ -11,3 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Adminable behaviour and `__using__` macro
 - Basic ability to list, create, and edit schemas
+
+## [0.1.1] - 2019-05-23
+
+### Fixed
+
+- [Pagination not working](https://github.com/revelrylabs/adminable/pull/1)
