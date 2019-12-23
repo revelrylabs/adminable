@@ -4,7 +4,7 @@ defmodule Adminable.MixProject do
   def project do
     [
       app: :adminable,
-      version: "0.1.1",
+      version: "0.2.0",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -47,10 +47,10 @@ defmodule Adminable.MixProject do
       {:gettext, "~> 0.11"},
       {:ecto, "~> 3.0"},
       {:scrivener_ecto, "~> 2.0"},
-      {:harmonium, "~> 2.0.0"},
+      {:harmonium, "~> 2.0"},
       {:jason, "~> 1.0"},
-      {:ex_doc, "~> 0.19.1", only: :dev},
-      {:excoveralls, "~> 0.10.3", only: :test}
+      {:ex_doc, "~> 0.19", only: :dev},
+      {:excoveralls, "~> 0.10", only: :test}
     ]
   end
 
