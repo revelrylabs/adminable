@@ -46,7 +46,7 @@ scope "/admin" do
   forward("/", Adminable.Plug, [
     otp_app: :my_app,
     repo: MyApp.Repo,
-    schemas: [MyApp.User]
+    schemas: [MyApp.User],
     layout: {MyAppWeb.LayoutView, "app.html"}
   ])
 end

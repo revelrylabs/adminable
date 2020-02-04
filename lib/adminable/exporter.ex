@@ -2,7 +2,7 @@ defmodule Adminable.Exporter do
   @moduledoc """
   Exports templates and a view module.
   This allows for apps that use Adminable to modify templates
-  to their liking
+  to their liking.
   """
 
   template_paths = "lib/adminable/templates/admin/**/*.html.eex" |> Path.wildcard() |> Enum.sort()
@@ -21,8 +21,8 @@ defmodule Adminable.Exporter do
 
   def view_module(web_module) do
     """
-    defmodule #{web_module}.Adminable.AdminView do
-      use #{web_module}, :view
+    defmodule #{inspect web_module}.Adminable.AdminView do
+      use #{inspect web_module}, :view
       use Adminable.ViewHelpers
     end
     """

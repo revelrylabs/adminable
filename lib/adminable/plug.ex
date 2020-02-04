@@ -24,6 +24,7 @@ defmodule Adminable.Plug do
     repo = Keyword.fetch!(opts, :repo)
     otp_app = Keyword.fetch!(opts, :otp_app)
     schemas = Keyword.get(opts, :schemas, [])
+    view_module = Keyword.get(opts, :view_module, Adminable.AdminView)
     layout = Keyword.get(opts, :layout, {Adminable.LayoutView, "app.html"})
 
     schemas =
@@ -40,6 +41,7 @@ defmodule Adminable.Plug do
     |> Plug.Conn.assign(:repo, repo)
     |> Plug.Conn.assign(:schemas, schemas)
     |> Plug.Conn.assign(:layout, layout)
+    |> Plug.Conn.assign(:view_module, view_module)
     |> Adminable.Router.call(opts)
   end
 end

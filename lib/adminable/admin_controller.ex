@@ -13,6 +13,7 @@ defmodule Adminable.AdminController do
 
     conn
     |> put_layout(conn.assigns.layout)
+    |> put_view(conn.assigns.view_module)
     |> render("dashboard.html", opts)
   end
 
@@ -39,6 +40,7 @@ defmodule Adminable.AdminController do
 
     conn
     |> put_layout(conn.assigns.layout)
+    |> put_view(conn.assigns.view_module)
     |> render("index.html", opts)
   end
 
@@ -55,6 +57,7 @@ defmodule Adminable.AdminController do
 
     conn
     |> put_layout(conn.assigns.layout)
+    |> put_view(conn.assigns.view_module)
     |> render("new.html", opts)
   end
 
@@ -82,6 +85,7 @@ defmodule Adminable.AdminController do
         |> put_flash(:error, "#{String.capitalize(schema)} failed to create!")
         |> put_status(:unprocessable_entity)
         |> put_layout(conn.assigns.layout)
+        |> put_view(conn.assigns.view_module)
         |> render("new.html", opts)
     end
   end
@@ -104,6 +108,7 @@ defmodule Adminable.AdminController do
 
     conn
     |> put_layout(conn.assigns.layout)
+    |> put_view(conn.assigns.view_module)
     |> render("edit.html", opts)
   end
 
@@ -132,6 +137,7 @@ defmodule Adminable.AdminController do
         |> put_flash(:error, "#{String.capitalize(schema)} ID #{pk} failed to update!")
         |> put_status(:unprocessable_entity)
         |> put_layout(conn.assigns.layout)
+        |> put_view(conn.assigns.view_module)
         |> render("edit.html", opts)
     end
   end
