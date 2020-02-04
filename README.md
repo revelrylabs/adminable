@@ -47,6 +47,7 @@ scope "/admin" do
     otp_app: :my_app,
     repo: MyApp.Repo,
     schemas: [MyApp.User],
+    view_module: MyAppWeb.Adminable.AdminView
     layout: {MyAppWeb.LayoutView, "app.html"}
   ])
 end
