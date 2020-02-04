@@ -5,25 +5,25 @@ defmodule Adminable.AdminController do
   import Plug.Conn
 
   def dashboard(conn, _params) do
-    schemas = Map.keys(conn.assigns.schemas)
+    schemas = Map.keys(conn.private.adminable_schemas)
 
     opts = [
       schemas: schemas
     ]
 
     conn
-    |> put_layout(conn.assigns.layout)
-    |> put_view(conn.assigns.view_module)
+    |> put_layout(conn.private.adminable_layout)
+    |> put_view(conn.private.adminable_view_module)
     |> render("dashboard.html", opts)
   end
 
   def index(conn, %{"schema" => schema} = params) do
-    schema_module = conn.assigns.schemas[schema]
+    schema_module = conn.private.adminable_schemas[schema]
 
     paginate_config = [
       page_size: 20,
       page: Map.get(params, "page", 1),
-      module: conn.assigns.repo
+      module: conn.private.adminable_repo
     ]
 
     page = Scrivener.paginate(schema_module, paginate_config)
@@ -39,13 +39,13 @@ defmodule Adminable.AdminController do
     ]
 
     conn
-    |> put_layout(conn.assigns.layout)
-    |> put_view(conn.assigns.view_module)
+    |> put_layout(conn.private.adminable_layout)
+    |> put_view(conn.private.adminable_view_module)
     |> render("index.html", opts)
   end
 
   def new(conn, %{"schema" => schema}) do
-    schema_module = conn.assigns.schemas[schema]
+    schema_module = conn.private.adminable_schemas[schema]
 
     model = struct(schema_module)
 
@@ -56,19 +56,19 @@ defmodule Adminable.AdminController do
     ]
 
     conn
-    |> put_layout(conn.assigns.layout)
-    |> put_view(conn.assigns.view_module)
+    |> put_layout(conn.private.adminable_layout)
+    |> put_view(conn.private.adminable_view_module)
     |> render("new.html", opts)
   end
 
   def create(conn, %{"schema" => schema, "data" => data}) do
-    schema_module = conn.assigns.schemas[schema]
+    schema_module = conn.private.adminable_schemas[schema]
 
     new_schema = struct(schema_module)
 
     changeset = schema_module.create_changeset(new_schema, data)
 
-    case conn.assigns.repo.insert(changeset) do
+    case conn.private.adminable_repo.insert(changeset) do
       {:ok, _created} ->
         conn
         |> put_flash(:info, "#{String.capitalize(schema)} created!")
@@ -84,19 +84,19 @@ defmodule Adminable.AdminController do
         conn
         |> put_flash(:error, "#{String.capitalize(schema)} failed to create!")
         |> put_status(:unprocessable_entity)
-        |> put_layout(conn.assigns.layout)
-        |> put_view(conn.assigns.view_module)
+        |> put_layout(conn.private.adminable_layout)
+        |> put_view(conn.private.adminable_view_module)
         |> render("new.html", opts)
     end
   end
 
   def edit(conn, %{"schema" => schema, "pk" => pk}) do
-    schema_module = conn.assigns.schemas[schema]
+    schema_module = conn.private.adminable_schemas[schema]
 
     model =
       schema_module.__schema__(:associations)
-      |> Enum.reduce(conn.assigns.repo.get(schema_module, pk), fn a, m ->
-        conn.assigns.repo.preload(m, a)
+      |> Enum.reduce(conn.private.adminable_repo.get(schema_module, pk), fn a, m ->
+        conn.private.adminable_repo.preload(m, a)
       end)
 
     opts = [
@@ -107,19 +107,19 @@ defmodule Adminable.AdminController do
     ]
 
     conn
-    |> put_layout(conn.assigns.layout)
-    |> put_view(conn.assigns.view_module)
+    |> put_layout(conn.private.adminable_layout)
+    |> put_view(conn.private.adminable_view_module)
     |> render("edit.html", opts)
   end
 
   def update(conn, %{"schema" => schema, "pk" => pk, "data" => data}) do
-    schema_module = conn.assigns.schemas[schema]
+    schema_module = conn.private.adminable_schemas[schema]
 
-    item = conn.assigns.repo.get!(schema_module, pk)
+    item = conn.private.adminable_repo.get!(schema_module, pk)
 
     changeset = schema_module.edit_changeset(item, data)
 
-    case conn.assigns.repo.update(changeset) do
+    case conn.private.adminable_repo.update(changeset) do
       {:ok, _updated_model} ->
         conn
         |> put_flash(:info, "#{String.capitalize(schema)} ID #{pk} updated!")
@@ -136,8 +136,8 @@ defmodule Adminable.AdminController do
         conn
         |> put_flash(:error, "#{String.capitalize(schema)} ID #{pk} failed to update!")
         |> put_status(:unprocessable_entity)
-        |> put_layout(conn.assigns.layout)
-        |> put_view(conn.assigns.view_module)
+        |> put_layout(conn.private.adminable_layout)
+        |> put_view(conn.private.adminable_view_module)
         |> render("edit.html", opts)
     end
   end

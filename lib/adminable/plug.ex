@@ -47,11 +47,11 @@ defmodule Adminable.Plug do
       |> Enum.into(%{})
 
     conn
-    |> Plug.Conn.assign(:otp_app, otp_app)
-    |> Plug.Conn.assign(:repo, repo)
-    |> Plug.Conn.assign(:schemas, schemas)
-    |> Plug.Conn.assign(:layout, layout)
-    |> Plug.Conn.assign(:view_module, view_module)
+    |> Plug.Conn.put_private(:adminable_otp_app, otp_app)
+    |> Plug.Conn.put_private(:adminable_repo, repo)
+    |> Plug.Conn.put_private(:adminable_schemas, schemas)
+    |> Plug.Conn.put_private(:adminable_layout, layout)
+    |> Plug.Conn.put_private(:adminable_view_module, view_module)
     |> Adminable.Router.call(opts)
   end
 end
