@@ -59,3 +59,11 @@ Arguments
 - `schemas` - The schemas to make Admin sections for
 - `view_module` - (Optional) The view_module to use to display pages. Uses Adminable's view module by default. You can export the view to modify using `mix adminable.gen.view MyWebModule`
 - `layout` - (Optional) The layout to use
+
+## Exporting View and Templates
+
+To export Adminable's AdminView and templates for modification, run:
+
+```bash
+mix adminable.gen.view MyWebModule
+```
