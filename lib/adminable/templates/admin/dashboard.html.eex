@@ -1,11 +1,11 @@
-<%= row do %>
-  <%= col do %>
+<div class="rev-Row">
+  <div class="rev-Col">
     <h1>Admin Dashboard</h1>
-  <% end %>
-<% end %>
+  </div>
+</div>
 
-<%= row do %>
-  <%= col do %>
+<div class="rev-Row">
+  <div class="rev-Col">
     <div class="rev-TableContainer">
     <table class="rev-Table">
       <thead class="rev-Table-head">
@@ -24,5 +24,5 @@
       </tbody>
     </table>
     </div>
-  <% end %>
-<% end %>
+  </div>
+</div>

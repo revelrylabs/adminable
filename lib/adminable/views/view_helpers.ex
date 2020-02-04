@@ -6,8 +6,6 @@ defmodule Adminable.ViewHelpers do
       use Phoenix.HTML
       @page_links_to_show 2
 
-      import Harmonium
-
       def index_fields(schema_module) do
         schema_module.fields()
       end
