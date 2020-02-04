@@ -5,7 +5,7 @@
         <h2 class="u-break-word">Edit <%= String.capitalize(@schema) %></h2>
       <% end %>
     <% end %>
-    <%= form_for @changeset, Routes.admin_path(@conn, :update, @schema, @pk), [as: :data], fn f -> %>
+    <%= form_for @changeset, Adminable.Router.Helpers.admin_path(@conn, :update, @schema, @pk), [as: :data], fn f -> %>
       <%= row do %>
         <%= for field <- form_fields(@changeset) do %>
           <%= field(f, @schema_module, field) %>

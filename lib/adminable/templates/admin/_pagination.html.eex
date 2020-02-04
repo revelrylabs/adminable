@@ -1,48 +1,48 @@
-<%= if Adminable.PaginationView.show_pagination?(@total_pages) do %>
+<%= if Adminable.AdminView.show_pagination?(@total_pages) do %>
   <div class="rev-PaginationWrapper text-center">
     <ul class="rev-Pagination" role="navigation" aria-label="Pagination">
-      <%= unless Adminable.PaginationView.first_page?(@page_number) do %>
+      <%= unless Adminable.AdminView.first_page?(@page_number) do %>
         <li class="rev-Pagination-arrow">
-          <a href="<%= Adminable.PaginationView.make_page_link(@conn, 1, @url) %>">
+          <a href="<%= Adminable.AdminView.make_page_link(@conn, 1, @url) %>">
             <span><i class="icon-angle-double-left"></i>First<span class="ShowForSR"> page</span></span>
           </a>
         </li>
         <li class="rev-Pagination-arrow">
-          <a href="<%= Adminable.PaginationView.make_previous_page_link(@conn, @page_number, @url) %>">
+          <a href="<%= Adminable.AdminView.make_previous_page_link(@conn, @page_number, @url) %>">
             <span><i class="icon-angle-left"></i>Previous<span class="ShowForSR"> page</span></span>
           </a>
         </li>
       <% end %>
 
       <%= for page <- 1..@total_pages do %>
-        <%= if Adminable.PaginationView.show_previous_ellipsis?(page, @page_number) do %>
+        <%= if Adminable.AdminView.show_previous_ellipsis?(page, @page_number) do %>
           <li class="rev-Pagination-dots">
             ...
           </li>
         <% end %>
-        <%= if Adminable.PaginationView.show_page_link?(page, @page_number) do %>
-          <li class="rev-Pagination-number <%= Adminable.PaginationView.selected_page_class(page, @page_number)%>">
+        <%= if Adminable.AdminView.show_page_link?(page, @page_number) do %>
+          <li class="rev-Pagination-number <%= Adminable.AdminView.selected_page_class(page, @page_number)%>">
             <%= if page == @page_number do %>
               <span class="ShowForSR">You're on page </span><a><%= @page_number %></a>
             <% else %>
-              <a href="<%= Adminable.PaginationView.make_page_link(@conn, page, @url) %>" aria-label="Page <%= page %>"><%= page %></a>
+              <a href="<%= Adminable.AdminView.make_page_link(@conn, page, @url) %>" aria-label="Page <%= page %>"><%= page %></a>
             <% end %>
           </li>
         <% end %>
-        <%= if Adminable.PaginationView.show_next_ellipsis?(page, @page_number, @total_pages) do %>
+        <%= if Adminable.AdminView.show_next_ellipsis?(page, @page_number, @total_pages) do %>
           <li class="rev-Pagination-dots">
             ...
           </li>
         <% end %>
       <% end %>
-      <%= unless Adminable.PaginationView.last_page?(@page_number, @total_pages) do %>
+      <%= unless Adminable.AdminView.last_page?(@page_number, @total_pages) do %>
         <li class="rev-Pagination-arrow">
-          <a href="<%= Adminable.PaginationView.make_next_page_link(@conn, @page_number, @url) %>">
+          <a href="<%= Adminable.AdminView.make_next_page_link(@conn, @page_number, @url) %>">
             <span>Next<span class="ShowForSR"> page</span><i class="icon-angle-right"></i></span>
           </a>
         </li>
         <li class="rev-Pagination-arrow">
-          <a href="<%= Adminable.PaginationView.make_page_link(@conn, @total_pages, @url) %>">
+          <a href="<%= Adminable.AdminView.make_page_link(@conn, @total_pages, @url) %>">
             <span>Last<span class="ShowForSR"> page</span><i class="icon-angle-double-right"></i></span>
           </a>
         </li>

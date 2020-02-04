@@ -3,7 +3,6 @@ defmodule Adminable.AdminController do
 
   use Phoenix.Controller, namespace: Adminable
   import Plug.Conn
-  alias Adminable.Router.Helpers, as: Routes
 
   def dashboard(conn, _params) do
     schemas = Map.keys(conn.assigns.schemas)
@@ -70,7 +69,7 @@ defmodule Adminable.AdminController do
       {:ok, _created} ->
         conn
         |> put_flash(:info, "#{String.capitalize(schema)} created!")
-        |> redirect(to: Routes.admin_path(conn, :index, schema))
+        |> redirect(to: Adminable.Router.Helpers.admin_path(conn, :index, schema))
 
       {:error, changeset} ->
         opts = [
@@ -119,7 +118,7 @@ defmodule Adminable.AdminController do
       {:ok, _updated_model} ->
         conn
         |> put_flash(:info, "#{String.capitalize(schema)} ID #{pk} updated!")
-        |> redirect(to: Routes.admin_path(conn, :index, schema))
+        |> redirect(to: Adminable.Router.Helpers.admin_path(conn, :index, schema))
 
       {:error, changeset} ->
         opts = [
