@@ -12,7 +12,7 @@ by adding `adminable` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:adminable, "~> 0.1.0"}
+    {:adminable, "~> 0.3.0"}
   ]
 end
 ```
