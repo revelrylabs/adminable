@@ -33,6 +33,14 @@ defmodule Adminable do
     ])
   end
   ```
+
+  Arguments
+
+  * `otp_app` - Your app
+  * `repo` - Your app's Repo
+  * `schemas` - The schemas to make Admin sections for
+  * `view_module` - (Optional) The view_module to use to display pages. Uses Adminable's view module by default. You can export the view to modify using `mix adminable.gen.view MyWebModule`
+  * `layout` - (Optional) The layout to use
   """
 
   @doc """
