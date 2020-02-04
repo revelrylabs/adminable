@@ -27,11 +27,20 @@ defmodule Adminable do
     forward("/", Adminable.Plug, [
       otp_app: :my_app,
       repo: MyApp.Repo,
-      schemas: [MyApp.User]
+      schemas: [MyApp.User],
+      view_module: MyAppWeb.Adminable.AdminView
       layout: {MyAppWeb.LayoutView, "app.html"}
     ])
   end
   ```
+
+  Arguments
+
+  * `otp_app` - Your app
+  * `repo` - Your app's Repo
+  * `schemas` - The schemas to make Admin sections for
+  * `view_module` - (Optional) The view_module to use to display pages. Uses Adminable's view module by default. You can export the view to modify using `mix adminable.gen.view MyWebModule`
+  * `layout` - (Optional) The layout to use
   """
 
   @doc """

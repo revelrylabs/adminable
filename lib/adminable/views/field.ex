@@ -12,7 +12,7 @@ defmodule Adminable.Field do
   defp field_html(form, field, :boolean, opts) do
     ~E"""
     <%= col do %>
-      <%= single_checkbox(form, field, Keyword.merge([label: String.capitalize(to_string(field))], opts)) %>
+      <%= single_checkbox(form, field, Keyword.merge([label: Phoenix.Naming.humanize(field)], opts)) %>
     <% end %>
     """
   end
@@ -23,7 +23,7 @@ defmodule Adminable.Field do
       <%= number_input_stack(
           form,
           field,
-          label: String.capitalize(to_string(field)),
+          label: Phoenix.Naming.humanize(field),
           input: Keyword.merge([], opts))
       %>
     <% end %>
@@ -36,8 +36,8 @@ defmodule Adminable.Field do
       <%= text_input_stack(
           form,
           field,
-          label: String.capitalize(to_string(field)),
-          input: Keyword.merge([placeholder: String.capitalize(to_string(field))], opts))
+          label: Phoenix.Naming.humanize(field),
+          input: Keyword.merge([placeholder: Phoenix.Naming.humanize(field)], opts))
       %>
     <% end %>
     """

@@ -10,10 +10,20 @@ defmodule Adminable.Plug do
       otp_app: :my_app,
       repo: MyApp.Repo,
       schemas: [MyApp.User],
+      view_module: MyAppWeb.Adminable.AdminView
       layout: {MyAppWeb.LayoutView, "app.html"}
     ])
   end
   ```
+
+  Arguments
+
+  * `otp_app` - Your app
+  * `repo` - Your app's Repo
+  * `schemas` - The schemas to make Admin sections for
+  * `view_module` - (Optional) The view_module to use to display pages. Uses Adminable's view module by default. You can export the view to modify using `mix adminable.gen.view MyWebModule`
+  * `layout` - (Optional) The layout to use
+
   """
 
   def init(opts) do
@@ -24,6 +34,7 @@ defmodule Adminable.Plug do
     repo = Keyword.fetch!(opts, :repo)
     otp_app = Keyword.fetch!(opts, :otp_app)
     schemas = Keyword.get(opts, :schemas, [])
+    view_module = Keyword.get(opts, :view_module, Adminable.AdminView)
     layout = Keyword.get(opts, :layout, {Adminable.LayoutView, "app.html"})
 
     schemas =
@@ -40,6 +51,7 @@ defmodule Adminable.Plug do
     |> Plug.Conn.assign(:repo, repo)
     |> Plug.Conn.assign(:schemas, schemas)
     |> Plug.Conn.assign(:layout, layout)
+    |> Plug.Conn.assign(:view_module, view_module)
     |> Adminable.Router.call(opts)
   end
 end
