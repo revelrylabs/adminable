@@ -4,7 +4,7 @@ defmodule Adminable.MixProject do
   def project do
     [
       app: :adminable,
-      version: "0.3.1",
+      version: "0.4.0",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -42,14 +42,14 @@ defmodule Adminable.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:phoenix, "~> 1.4.0"},
-      {:phoenix_html, "~> 2.10"},
+      {:phoenix, "~> 1.6"},
+      {:phoenix_html, "~> 3.1"},
       {:gettext, "~> 0.11"},
       {:ecto, "~> 3.0"},
       {:scrivener_ecto, "~> 2.0"},
-      {:harmonium, "~> 2.0"},
+      {:harmonium, "~> 2.2"},
       {:jason, "~> 1.0"},
-      {:ex_doc, "~> 0.19", only: :dev},
+      {:ex_doc, "~> 0.20", only: :dev},
       {:excoveralls, "~> 0.10", only: :test}
     ]
   end
