@@ -13,28 +13,28 @@
 <div class="rev-Row">
   <div class="rev-Col">
     <div class="rev-TableContainer">
-    <table class="rev-Table">
-      <thead class="rev-Table-head">
-        <tr class="rev-Table-row">
-        <%= for field <- index_fields(@schema_module) do %>
-          <th class="rev-Table-header"><%= Phoenix.Naming.humanize(field) %></th>
-        <% end %>
-          <th>Edit</th>
-        </tr>
-      </thead>
-      <tbody class="rev-Table-body">
-        <%= for schema <- @schemas do %>
+      <table class="rev-Table">
+        <thead class="rev-Table-head">
           <tr class="rev-Table-row">
-            <%= for field <- index_fields(@schema_module) do %>
-              <td class="rev-Table-Data"><%= Map.get(schema, field) %></td>
-            <% end %>
-            <td>
-              <%= link "Edit", to: Adminable.Router.Helpers.admin_path(@conn, :edit, @schema, schema.id), class: "rev-Button rev-Button--secondary" %>
-            </td>
-          <tr>
-        <% end %>
-      </tbody>
-    </table>
+          <%= for field <- index_fields(@schema_module) do %>
+            <th class="rev-Table-header"><%= Phoenix.Naming.humanize(field) %></th>
+          <% end %>
+            <th>Edit</th>
+          </tr>
+        </thead>
+        <tbody class="rev-Table-body">
+          <%= for schema <- @schemas do %>
+            <tr class="rev-Table-row">
+              <%= for field <- index_fields(@schema_module) do %>
+                <td class="rev-Table-Data"><%= Map.get(schema, field) %></td>
+              <% end %>
+              <td>
+                <%= link "Edit", to: Adminable.Router.Helpers.admin_path(@conn, :edit, @schema, schema.id), class: "rev-Button rev-Button--secondary" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
 
     <%= render "_pagination.html",
